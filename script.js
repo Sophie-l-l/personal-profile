@@ -10,6 +10,7 @@ const handleScroll=() =>{
 }
 document.addEventListener('scroll',()=>{
     requestAnimationFrame(handleScroll);
+
 });
 
 
@@ -57,46 +58,47 @@ path_box.addEventListener('mouseleave', disableDrawing);
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Get the layers container
-    const layersContainer = document.querySelector('#firefly-container');
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Get the layers container
+//     const layersContainer = document.querySelector('#firefly-container');
 
-    // Get all firefly images
-    const fireflies = document.querySelectorAll('.fireflies');
+//     // Get all firefly images
+//     const fireflies = document.querySelectorAll('.fireflies');
 
-    // Function to generate a random position within a specified range
-    function getRandomPosition(min, max) {
-        return Math.random() * (max - min) + min;
-    }
+//     // Function to generate a random position within a specified range
+//     function getRandomPosition(min, max) {
+//         return Math.random() * (max - min) + min;
+//     }
 
-    // Loop through each firefly and set a random position
-    fireflies.forEach(firefly => {
-        // Specify the range for X and Y positions (adjust as needed)
-        const minX = 0;
-        const maxX = layersContainer.clientWidth - firefly.clientWidth;
-        const minY = 0;
-        const maxY = layersContainer.clientHeight - firefly.clientHeight;
+//     // Loop through each firefly and set a random position
+//     fireflies.forEach(firefly => {
+//         // Specify the range for X and Y positions (adjust as needed)
+//         const minX = 0;
+//         const maxX = layersContainer.clientWidth - firefly.clientWidth;
+//         const minY = 0;
+//         const maxY = layersContainer.clientHeight - firefly.clientHeight;
 
-        // Set the firefly's position
-        firefly.style.left = getRandomPosition(minX, maxX) + 'px';
-        firefly.style.top = getRandomPosition(minY, maxY) + 'px';
+//         // Set the firefly's position
+//         firefly.style.left = getRandomPosition(minX, maxX) + 'px';
+//         firefly.style.top = getRandomPosition(minY, maxY) + 'px';
 
-    });
-});
+//     });
+// });
 
 
 document.addEventListener('DOMContentLoaded', function () {
     const background = document.querySelector('#firefly-container');
     const fireflies = [];
+    const firefliessrc=['./img/firefly-1.png','./img/firefly-2.png','./img/firefly-3.png','./img/firefly-4.png','./img/firefly-5.png','./img/firefly-6.png','./img/firefly-7.png'];
 
     // Add fireflies dynamically
-    for (let i = 0; i < 10; i++) {
-      createFirefly();
+    for (let i = 0; i < 14; i++) {
+      createFirefly(i);
     }
 
-    function createFirefly() {
+    function createFirefly(i) {
       const firefly = document.createElement('img');
-      firefly.src = './img/firefly-1.png'; 
+      firefly.src = firefliessrc[i%7]; 
       firefly.classList.add('firefly');
       background.appendChild(firefly);
   
@@ -113,22 +115,64 @@ document.addEventListener('DOMContentLoaded', function () {
       firefly.style.opacity = opacity;
   
       // Apply noise effect using CSS3 transform
-      const noiseOffsetX = Math.random() * 10 - 5;
-      const noiseOffsetY = Math.random() * 10 - 5;
-      firefly.style.transform = `translate(${noiseOffsetX}px, ${noiseOffsetY}px)`;
-      
+      const noiseOffsettime=Math.random()*1;
+      firefly.style.transition=`opacity ${noiseOffsettime}s ease-in-out`;
       // Store the firefly in the array
       fireflies.push(firefly);
     }
 
     // Function to toggle visibility with a flickering effect
-    function toggleVisibility() {
+    function toggleVisibilityandposition() {
       fireflies.forEach(firefly => {
-        const isVisible = Math.random() > 0.3; // Adjust the threshold as needed
-        firefly.style.visibility = isVisible ? 'visible' : 'hidden';
+        
+        if(firefly.style.opacity>=0.5){
+            firefly.style.opacity=0;
+        }
+        else{
+            const noiseOffsetX = Math.random() * 100;
+            const noiseOffsetY = Math.random() * 100;
+            firefly.style.transform = `translate(${noiseOffsetX}px, ${noiseOffsetY}px)`;
+            firefly.style.opacity=Math.random() * 0.5 + 0.5;
+        }
+
       });
     }
 
     // Set interval to toggle visibility every 500 milliseconds (adjust as needed)
-    setInterval(toggleVisibility, 500);
+    setInterval(toggleVisibilityandposition, 1000);
 });
+
+function autoScroll() {
+    // Set the speed and the interval between scroll steps
+    const scrollSpeed = 2; // Adjust the speed as needed
+    const scrollInterval = 20; // Interval in milliseconds
+  
+    // Calculate the total height of the webpage
+    const totalHeight = document.body.scrollHeight - window.innerHeight;
+  
+    // Variable to keep track of the current scroll position
+    let currentScroll = 0;
+  
+    // Function to perform the scroll step
+    function scrollStep() {
+      // Increment the current scroll position
+      currentScroll += scrollSpeed;
+  
+      // If we reached the bottom of the page, stop scrolling
+      if (currentScroll >= totalHeight) {
+        clearInterval(scrollIntervalId);
+      }
+  
+      // Scroll the window to the current position
+      window.scroll(0, currentScroll);
+    }
+  
+    // Set up the interval to call the scrollStep function
+    const scrollIntervalId = setInterval(scrollStep, scrollInterval);
+}
+  
+// const arrow=querySelector(".scroll-arrow");
+// arrow.addEventListener("click",()=>{
+//     if(arrow.style.opacity=1)   arrow.style.opacity=0;
+//     else arrow.style.opacity=1;
+// });
