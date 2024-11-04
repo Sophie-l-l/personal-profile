@@ -1,4 +1,4 @@
-# Persona Profile Repository
+# My Forest
 [website address](https://sophie-l-l.github.io/personal-profile/)<br><br>
 Welcome to my Persona Profile repository! This website serves as a showcase of the projects I've completed during the Communication Lab class. It also includes a personal description and is designed with a theme inspired by the forest throughout different seasons—spring, summer, and autumn.
 
